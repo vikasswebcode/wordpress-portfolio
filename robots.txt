@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://vikassingh.github.io/wordpress-portfolio/sitemap.xml
+Sitemap: https://github.com/vikasswebcode/wordpress-portfolio/sitemap.xml
