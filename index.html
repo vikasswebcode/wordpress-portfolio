@@ -24,7 +24,7 @@
 <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>⚡</text></svg>"/>
 <link rel="preconnect" href="https://fonts.googleapis.com"/>
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
-<link rel="preconnect" href="https://api.web3forms.com"/>
+
 <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Syne:wght@700;800&display=swap" rel="stylesheet"/>
 <script type="application/ld+json">
 {"@context":"https://schema.org","@graph":[{"@type":"Person","@id":"#person","name":"Vikas Singh","jobTitle":"WordPress Expert & Web Developer","description":"Top-Rated WordPress Developer with 100+ sites built worldwide.","url":"https://vikasswebcode.github.io/wordpress-portfolio/","email":"vikaswebcode@gmail.com","sameAs":["https://www.upwork.com/freelancers/~01ac187cb40fa5efc5?mp_source=share"],"knowsAbout":["WordPress","WooCommerce","PHP","JavaScript","Elementor","Headless WordPress","REST API"]},{"@type":"ProfessionalService","@id":"#service","name":"Vikas Singh — WordPress Expert","description":"Professional WordPress development, WooCommerce, custom themes, plugins, speed optimization and headless WordPress.","provider":{"@id":"#person"},"areaServed":"Worldwide","aggregateRating":{"@type":"AggregateRating","ratingValue":"4.9","reviewCount":"100","bestRating":"5"},"hasOfferCatalog":{"@type":"OfferCatalog","name":"WordPress Services","itemListElement":[{"@type":"Offer","itemOffered":{"@type":"Service","name":"Custom WordPress Theme Development"}},{"@type":"Offer","itemOffered":{"@type":"Service","name":"WooCommerce Store Development"}},{"@type":"Offer","itemOffered":{"@type":"Service","name":"WordPress Plugin Development"}},{"@type":"Offer","itemOffered":{"@type":"Service","name":"WordPress Speed Optimization"}},{"@type":"Offer","itemOffered":{"@type":"Service","name":"Headless WordPress Development"}}]}},{"@type":"FAQPage","mainEntity":[{"@type":"Question","name":"How much does a custom WordPress website cost?","acceptedAnswer":{"@type":"Answer","text":"Custom WordPress websites start from $699 for theme customization, $2,199 for fully custom sites, and $5,999+ for enterprise builds with WooCommerce or headless setup."}},{"@type":"Question","name":"Do you build WooCommerce stores?","acceptedAnswer":{"@type":"Answer","text":"Yes, WooCommerce development is one of my core services — from simple stores to complex multi-vendor marketplaces with custom payment gateways."}},{"@type":"Question","name":"Can you speed up my existing WordPress site?","acceptedAnswer":{"@type":"Answer","text":"Absolutely. I specialize in WordPress performance — achieving 90+ PageSpeed scores through caching, CDN, image optimization, and code cleanup."}}]}]}
@@ -1318,10 +1318,10 @@ footer{padding:4rem 0 2rem;border-top:1px solid var(--border);background:var(--b
         </div>
 
         <form id="contact-form" novalidate>
-          <input type="hidden" name="access_key" value="YOUR_WEB3FORMS_KEY_HERE"/>
-          <input type="hidden" name="subject" value="New WordPress Project Inquiry — Portfolio"/>
-          <input type="hidden" name="from_name" value="WordPress Portfolio Contact Form"/>
-          <input type="checkbox" name="botcheck" style="display:none"/>
+          
+          
+          
+          
 
           <div class="frow">
             <div class="fg"><label for="f-name">Your Name *</label><input id="f-name" name="name" type="text" placeholder="John Doe" required autocomplete="name"/></div>
@@ -1509,26 +1509,27 @@ function resetForm(){
 }
 
 if(form){
-  form.addEventListener('submit',async function(e){
+  form.addEventListener('submit',function(e){
     e.preventDefault()
     const btn=document.getElementById('fbtn')
     const txt=document.getElementById('fbtntxt')
     const icon=document.getElementById('fbtn-icon')
     err.style.display='none'
-    btn.disabled=true;btn.style.opacity='.7';txt.textContent='Sending…'
+    const name=document.getElementById('f-name').value
+    const email=document.getElementById('f-email').value
+    const company=document.getElementById('f-company').value
+    const budget=document.getElementById('f-budget').value
+    const service=document.getElementById('f-service').value
+    const message=document.getElementById('f-msg').value
+    const body=`Name: ${name}\nEmail: ${email}\nCompany: ${company}\nBudget: ${budget}\nService: ${service}\n\nProject Details:\n${message}`
+    const mailto=`mailto:vikaswebcode@gmail.com?subject=${encodeURIComponent('New Project Inquiry — '+service)}&body=${encodeURIComponent(body)}`
+    btn.disabled=true;btn.style.opacity='.7';txt.textContent='Opening Email…'
     if(icon)icon.style.animation='spin 1s linear infinite'
-    try{
-      const res=await fetch('https://api.web3forms.com/submit',{method:'POST',body:new FormData(form)})
-      const json=await res.json()
-      if(res.ok&&json.success){
-        form.style.display='none';succ.style.display='block'
-        succ.scrollIntoView({behavior:'smooth',block:'center'})
-      } else throw new Error(json.message||'Failed')
-    } catch(ex){
-      err.style.display='block'
-      btn.disabled=false;btn.style.opacity='1';txt.textContent='Try Again →'
-      if(icon)icon.style.animation=''
-    }
+    window.location.href=mailto
+    setTimeout(function(){
+      form.style.display='none';succ.style.display='block'
+      succ.scrollIntoView({behavior:'smooth',block:'center'})
+    },1000)
   })
 }
 </script>
