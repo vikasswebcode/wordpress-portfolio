@@ -1509,27 +1509,31 @@ function resetForm(){
 }
 
 if(form){
-  form.addEventListener('submit',function(e){
+  form.addEventListener('submit',async function(e){
     e.preventDefault()
     const btn=document.getElementById('fbtn')
     const txt=document.getElementById('fbtntxt')
     const icon=document.getElementById('fbtn-icon')
     err.style.display='none'
-    const name=document.getElementById('f-name').value
-    const email=document.getElementById('f-email').value
-    const company=document.getElementById('f-company').value
-    const budget=document.getElementById('f-budget').value
-    const service=document.getElementById('f-service').value
-    const message=document.getElementById('f-msg').value
-    const body=`Name: ${name}\nEmail: ${email}\nCompany: ${company}\nBudget: ${budget}\nService: ${service}\n\nProject Details:\n${message}`
-    const mailto=`mailto:vikaswebcode@gmail.com?subject=${encodeURIComponent('New Project Inquiry — '+service)}&body=${encodeURIComponent(body)}`
-    btn.disabled=true;btn.style.opacity='.7';txt.textContent='Opening Email…'
+    btn.disabled=true;btn.style.opacity='.7';txt.textContent='Sending…'
     if(icon)icon.style.animation='spin 1s linear infinite'
-    window.location.href=mailto
-    setTimeout(function(){
-      form.style.display='none';succ.style.display='block'
-      succ.scrollIntoView({behavior:'smooth',block:'center'})
-    },1000)
+    try{
+      const data=new FormData(form)
+      const res=await fetch('https://formsubmit.co/ajax/vikaswebcode@gmail.com',{
+        method:'POST',
+        headers:{'Accept':'application/json'},
+        body:data
+      })
+      const json=await res.json()
+      if(json.success==='true'||json.success===true){
+        form.style.display='none';succ.style.display='block'
+        succ.scrollIntoView({behavior:'smooth',block:'center'})
+      } else throw new Error('Failed')
+    } catch(ex){
+      err.style.display='block'
+      btn.disabled=false;btn.style.opacity='1';txt.textContent='Try Again →'
+      if(icon)icon.style.animation=''
+    }
   })
 }
 </script>
